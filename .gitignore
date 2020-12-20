@@ -1,0 +1,20 @@
+# General
+a.out
+*.o
+
+# Python
+__pycache__
+venv
+
+# Haskell
+*.hi
+
+# Java
+out
+
+# VIM
+.vim
+
+# IntelliJ
+.idea
+*.iml
