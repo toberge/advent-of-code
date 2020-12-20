@@ -1,0 +1,46 @@
+# Advent of Code 2020
+
+Python files read from `stdin` and can be run like this:
+
+```sh
+python part_one.py < input.dat
+```
+
+Solutions written in Haskell and other languages might have a different method of receiving a file – typically as an argument or through `stdin`.
+
+## Scoreboard
+
+✅: Finished on time
+🆗: Finished, but a little late
+
+Languages: Python (🐍), Haskell (λ), C++ (➕)
+
+| Puzzle | Part 1 | Part 2 | Late   |   Time | Language |
+|--------+--------+--------+--------+-------:+----------|
+| Day 1  | ✅     | ✅     | Day 6  | 7.3 ms | 🐍 ➕    |
+| Day 2  | ✅     | ✅     | Day 6  | 108 ms | 🐍       |
+| Day 3  | ✅     | ✅     | Day 6  | 101 ms | 🐍       |
+| Day 4  | ✅     | ✅     | Day 6  |  95 ms | 🐍       |
+| Day 5  | ✅     | ✅     | Day 6  |  86 ms | 🐍       |
+| Day 6  | ✅     | ✅     | Day 7  |  91 ms | 🐍       |
+| Day 7  | ✅     | ✅     |        | 120 ms | 🐍       |
+| Day 8  | ✅     | ✅     |        | ~50 ms | 🐍       |
+| Day 9  | ✅     | ✅     |        | 1.07 s | 🐍       |
+| Day 10 | ✅     |        |        | >17 ms | 🐍       |
+| Day 11 | ✅     | ✅     |        | ~3.1 s | 🐍       |
+| Day 12 | ✅     | ✅     |        | 120 ms | 🐍       |
+| Day 13 | ✅     |        |        | >16 ms | λ        |
+| Day 14 | ✅     |        |        | >57 ms | 🐍       |
+| Day 15 | ✅     | ✅     |        |   ~9 s | 🐍       |
+| Day 16 | ✅     | 🆗     | Day 20 | ~70 ms | 🐍       |
+| Day 17 | ✅     | ✅     |        | 4.86 s | 🐍       |
+| Day 18 | ✅     | ✅     |        | ~30 ms | 🐍       |
+| Day 19 | ✅     | 🆗     | Day 20 | 216 ms | 🐍       |
+| Day 20 |        |        |        |        |          |
+| Day 21 |        |        |        |        |          |
+| Day 22 |        |        |        |        |          |
+| Day 23 |        |        |        |        |          |
+| Day 24 |        |        |        |        |          |
+| Day 25 |        |        |        |        |          |
+
+(Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
