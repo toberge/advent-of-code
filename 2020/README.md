@@ -10,7 +10,7 @@ Solutions written in Haskell and other languages might have a different method o
 
 ## Scoreboard
 
-✔ : Finished on time
+✔ : Finished on time  
 🆗: Finished, but a little late
 
 I don't consider the initial catch-up to be _late_.
