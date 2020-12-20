@@ -16,7 +16,7 @@ Solutions written in Haskell and other languages might have a different method o
 Languages: Python (🐍), Haskell (λ), C++ (➕)
 
 | Puzzle | Part 1 | Part 2 | Late   |   Time | Language |
-|--------+--------+--------+--------+-------:+----------|
+| ------ | ------ | ------ | ------ | -----: | -------- |
 | Day 1  | ✅     | ✅     | Day 6  | 7.3 ms | 🐍 ➕    |
 | Day 2  | ✅     | ✅     | Day 6  | 108 ms | 🐍       |
 | Day 3  | ✅     | ✅     | Day 6  | 101 ms | 🐍       |
