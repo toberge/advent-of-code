@@ -46,3 +46,8 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 | Day 25 |        |        |        |        |          |
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
+
+Current total: Almost 20 seconds  
+Goal: Less than 30 seconds
+
+(Estimates summed with `sed 's/ ms//;s/ //g' calc | awk 'BEGIN{sum = 0} {sum += $1} END{print sum}'`)
