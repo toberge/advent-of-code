@@ -50,4 +50,4 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 Current total: Around 20 seconds  
 Goal: Less than 30 seconds
 
-(Estimates summed with `sed 's/ ms//;s/ //g' calc | awk 'BEGIN{sum = 0} {sum += $1} END{print sum}'`)
+(Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](sum.awk))
