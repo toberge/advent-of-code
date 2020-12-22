@@ -2,38 +2,44 @@ import sys
 from collections import defaultdict
 from typing import Iterable
 
-# def floating_bits(number: str) -> Iterable[int]:
 
-
-def mask(bitmask, number, start=0) -> Iterable[int]:
-    """Bitmask with *floating* bits. Takes a BE bitmask."""
-    print(start, len(list(zip(range(start, len(bitmask)), bitmask[start:]))))
-    for i, msk in zip(range(start, len(bitmask)), bitmask[start:]):
-        if msk == "X":  # woop woop
-            # use the *current state* of the number!
-            # print(f"{number:b}")
-            yield from mask(bitmask[:i] + [0] + bitmask[i + 1 :], number, start=i + 1)
-            yield from mask(
-                bitmask[:i] + [1] + bitmask[i + 1 :], number | (1 << i), start=i + 1
+def bitmasks(floatmask) -> Iterable[int]:
+    """All possible bitmasks from a bitmask with floating bits"""
+    bitmask = ""
+    for i, msk in enumerate(floatmask):
+        if msk == "X":
+            yield from (
+                bitmask + "Z" + restmask for restmask in bitmasks(floatmask[i + 1 :])
             )
-            # number |= 1 << i  # go on with this version
-        elif msk == "1":
-            number |= 1 << i  # set bit
-        # if 0, ignore
-    print(f"{number:b}")
-    yield number
+            bitmask += "1"
+        else:
+            bitmask += msk
+    yield bitmask
+
+
+def mask(bitmask, number):
+    """Mask a number with a concrete bitmask"""
+    for i, msk in zip(range(len(bitmask)), reversed(bitmask)):
+        if msk == "1":  # Forcibly one
+            number |= 1 << i
+        elif msk == "Z":  # Forcibly zero
+            number = ~((~number) | (1 << i))
+        # Unchanged otherwise
+    return number
 
 
 def iterate(program: [(str, str)]):
+    """Emulate initialization of the docking program"""
     mem = defaultdict(int)
-    bitmask = ""
+    floatmask = ""
     for lhs, rhs in program:
         if lhs == "mask":
-            bitmask = list(reversed(rhs))
+            floatmask = rhs
         else:
-            print(set(mask(bitmask, int(lhs[4:-1]))))
-            for i in set(mask(bitmask, int(lhs[4:-1]))):
-                mem[i] = int(rhs)
+            addr = int(lhs[4:-1])
+            val = int(rhs)
+            for bitmask in bitmasks(floatmask):
+                mem[mask(bitmask, addr)] = val
     return sum(mem.values())
 
 
