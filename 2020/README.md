@@ -40,14 +40,14 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 | Day 19 | ✔      | 🆗     | Day 20 | 216 ms | 🐍       |
 | Day 20 |        |        |        |        |          |
 | Day 21 | ✔      | ✔      |        | 550 ms | 🐍       |
-| Day 22 |        |        |        |        |          |
+| Day 22 | ✔      | ✔      |        |   ~4 s | 🐍       |
 | Day 23 |        |        |        |        |          |
 | Day 24 |        |        |        |        |          |
 | Day 25 |        |        |        |        |          |
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Almost 20 seconds  
+Current total: Around 24 seconds  
 Goal: Less than 30 seconds
 
 (Estimates summed with `sed 's/ ms//;s/ //g' calc | awk 'BEGIN{sum = 0} {sum += $1} END{print sum}'`)
