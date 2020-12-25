@@ -11,7 +11,8 @@ Solutions written in Haskell and other languages might have a different method o
 ## Scoreboard
 
 ✔ : Finished on time  
-🆗: Finished, but a little late
+🆗 : Finished, but a little late  
+⭐ : Free star
 
 I don't consider the initial catch-up to be _late_.
 
