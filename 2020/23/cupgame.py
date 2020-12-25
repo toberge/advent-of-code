@@ -125,10 +125,6 @@ class circulist:
         tail.right = after
         after.left = tail
 
-    def swap(self, after, start, length=3):
-        """Place elements in start+length after an element"""
-        pass
-
     def wrap_around(self, label):
         """Wrap label around if it's less than minimum"""
         if label - 1 < self.minlabel:
