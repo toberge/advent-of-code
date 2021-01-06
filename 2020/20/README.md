@@ -2,22 +2,22 @@
 
 ## Steps
 
-#. Parse input
+1. Parse input
    + Separate frame from actual content
    + Include all permutations of the edges
-#. Make neighbour mapping
+1. Make neighbour mapping
    + `int -> [int]`
-#. Find the four tiles that have 2 neighbours
+1. Find the four tiles that have 2 neighbours
    + Those are corners
    + **Part one done!**
-#. Find ordering of tiles
+1. Find ordering of tiles
    + `[[int]]`
-#. Rotate and flip tiles to match order
-#. Merge tiles into full image
-#. Rotate until you find a sea monster
+1. Rotate and flip tiles to match order
+1. Merge tiles into full image
+1. Rotate until you find a sea monster
    + Flipping should not be necessary
-#. Replace sea monster #'s in image
-#. Count all #'s left in image
+1. Replace sea monster #'s in image
+1. Count all #'s left in image
    + **That's part two!**
 
 ## Visuals
