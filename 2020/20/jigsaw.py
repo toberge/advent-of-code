@@ -3,6 +3,12 @@ Day 20: Jurassic Jigsaw
 
 Part one: An hour and a half? Really?
           Probably less, since I was working on other things first.
+Part two: wrogrwjogjrwgowrjgorwjgorwgutwgwougjrwhgwoughrwoughrwg idk how long
+
+And, finally:
+You have enough stars to [Pay the Deposit].
+
+The time in the readme was measured WITHOUT image exports.
 """
 
 import math
@@ -10,8 +16,7 @@ import re
 import sys
 from collections import Counter, defaultdict
 from enum import IntEnum
-from itertools import chain, product
-from pprint import pp
+from itertools import chain
 
 import numpy as np
 from PIL import Image
@@ -25,7 +30,7 @@ SEA_MONSTER = """..................#.
 COLOR = {
     "#": [171, 196, 171],
     ".": [21, 82, 112],
-    "O": [220, 201, 182],
+    "O": [164, 69, 61],
     "B": [7, 43, 61],
 }
 
@@ -382,19 +387,81 @@ def merge(grid: [[Tile]]) -> Tile:
     return Tile(0, lines)
 
 
+def find_monsters(image: Tile) -> [(int, int)]:
+    monsters: [(int, int)] = []
+    monsterlen = len(SEA_MONSTER[0])
+    imglen = len(image.content)
+    for i in range(imglen - len(SEA_MONSTER)):
+        for j in range(imglen - monsterlen):
+            for k, pattern in enumerate(SEA_MONSTER):
+                if not re.fullmatch(pattern, image.content[i + k][j : j + monsterlen]):
+                    break  # no match!
+            else:
+                monsters.append((i, j))
+    return monsters
+
+
+def permute_the_thing(image: Tile):
+    """Just used to check that I WAS NOT UTTERLY WRONG"""
+    for _ in range(2):
+        for _ in range(4):
+            yield
+            image.rot()
+        image.flip()
+
+
+def find_monsters_in_permutations(image: Tile) -> [(int, int)]:
+    """hahahahahahahahahahahahahahaaaa"""
+    for _ in range(2):
+        for _ in range(4):
+            monsters = find_monsters(image)
+            if len(monsters) > 0:
+                return monsters
+            image.rot()
+        image.flip()
+    raise Exception("Clean waters?")
+
+
+def mark_monsters(monsters: [(int, int)], image: Tile):
+    """Horribly inefficient code, since each tile stores its stuff as a list of immutable strings"""
+    for y, x in monsters:
+        for dy, pattern in enumerate(SEA_MONSTER):
+            for dx, tile in enumerate(pattern):
+                if tile == "#":
+                    # orig = image.content[y + dy]
+                    # image.content[y + dy] = orig[: x + dx] + "O" + orig[x + dx + 1 :]
+                    image.content[y + dy] = "".join(
+                        c if x + dx != ix else "O"
+                        for ix, c in enumerate(image.content[y + dy])
+                    )
+
+
 def part_two(tiles: [Tile], neighbours):
     n = int(math.sqrt(len(tiles)))
     tilemap = {t.id: t for t in tiles}
+
+    # Find correct ordering
     grid = assemble_grid(neighbours, n)
     assert test_solution(grid, neighbours, n)
-    pp(grid)
     realgrid = [[tilemap[i] for i in row] for row in grid]
+
+    # Orient image correctly
     orient_grid_properly(realgrid, n)
-    image = merge_with_borders(realgrid)
-    image.to_image("borders.png")
+    # merge_with_borders(realgrid).to_image("borders.png")
     image = merge(realgrid)
-    image.to_image("merged.png")
-    # TODO: find the monsters!
+    # image.to_image("merged.png")
+
+    # eeeeh
+    # for i, _ in enumerate(permute_the_thing(image)):
+    #     monsters = find_monsters(image)
+    #     clone = Tile(0, image.content[:])
+    #     mark_monsters(monsters, clone)
+    #     print(i, sum(1 for t in chain.from_iterable(clone.content) if t == "#"))
+
+    # Find those monsters
+    monsters = find_monsters_in_permutations(image)
+    mark_monsters(monsters, image)
+    # image.to_image("monsters.png")
     return sum(1 for t in chain.from_iterable(image.content) if t == "#")
 
 
