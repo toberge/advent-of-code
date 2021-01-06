@@ -28,10 +28,10 @@ SEA_MONSTER = """..................#.
 )
 
 COLOR = {
-    "#": [171, 196, 171],
-    ".": [21, 82, 112],
+    "B": [32, 122, 167],
+    "#": [21, 82, 112],
     "O": [164, 69, 61],
-    "B": [7, 43, 61],
+    ".": [7, 43, 61],
 }
 
 
@@ -367,11 +367,11 @@ def merge_with_borders(grid: [[Tile]]) -> Tile:
     size = len(grid[0][0].content)
     for i, row in enumerate(grid):
         for _ in range(size):
-            lines.append("O")
+            lines.append("B")
         for _, tile in enumerate(row):
             for k in range(size):
-                lines[i * (size + 1) + k] += tile.content[k] + "O"
-        lines.append("".join("O" * (size * len(grid) + len(grid) + 1)))
+                lines[i * (size + 1) + k] += tile.content[k] + "B"
+        lines.append("".join("B" * (size * len(grid) + len(grid) + 1)))
     return Tile(0, lines)
 
 
@@ -447,9 +447,9 @@ def part_two(tiles: [Tile], neighbours):
 
     # Orient image correctly
     orient_grid_properly(realgrid, n)
-    # merge_with_borders(realgrid).to_image("borders.png")
+    merge_with_borders(realgrid).to_image("borders.png")
     image = merge(realgrid)
-    # image.to_image("merged.png")
+    image.to_image("merged.png")
 
     # eeeeh
     # for i, _ in enumerate(permute_the_thing(image)):
@@ -461,7 +461,7 @@ def part_two(tiles: [Tile], neighbours):
     # Find those monsters
     monsters = find_monsters_in_permutations(image)
     mark_monsters(monsters, image)
-    # image.to_image("monsters.png")
+    image.to_image("monsters.png")
     return sum(1 for t in chain.from_iterable(image.content) if t == "#")
 
 

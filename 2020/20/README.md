@@ -20,6 +20,11 @@
 1. Count all #'s left in image
    + **That's part two!**
 
+## Initial tests
+
+Can I rotate an image?  
+![original](asdf.png) ⟲  ![rotated](asdfrot.png)
+
 ## Visuals
 
 With borders and grid:  
