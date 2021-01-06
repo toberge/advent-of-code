@@ -22,9 +22,9 @@ _#__#__#__#__#__#___ """.split(
 )
 
 COLOR = {
-    "#": [254, 0, 0],
-    ".": [0, 0, 254],
-    "O": [254, 254, 0],
+    "#": [171, 196, 171],
+    ".": [21, 82, 112],
+    "O": [7, 43, 61],
 }
 
 
@@ -310,8 +310,63 @@ def rotate_until_both_equal(
     raise Exception("Yo, disse kan ikke matches!")
 
 
+def transform_until_equal(
+    tile1: Tile,
+    tile2: Tile,
+    edgefun1=lambda t: t.right_edge(),
+    edgefun2=lambda t: t.left_edge(),
+):
+    # Permutations of tile1
+    for _ in range(2):
+        for _ in range(4):
+            # Permutations of tile2
+            for _ in range(2):
+                for _ in range(4):
+                    if edgefun1(tile1) == edgefun2(tile2):
+                        return  # and break out
+                    tile2.rot()
+                tile2.flip()
+            tile1.rot()
+        tile1.flip()
+    raise Exception("Yo, disse TO kan ikke matches!")
+
+
+def transform_until_equal3(
+    tile1: Tile,
+    tile2: Tile,
+    tile3: Tile,
+    edgefun12=lambda t: t.right_edge(),
+    edgefun13=lambda t: t.bottom_edge(),
+    edgefun2=lambda t: t.left_edge(),
+    edgefun3=lambda t: t.top_edge(),
+):
+    # Permutations of tile1
+    for _ in range(2):
+        for _ in range(4):
+            # Permutations of tile2
+            for _ in range(2):
+                for _ in range(4):
+                    # Permutations of tile3
+                    for _ in range(2):
+                        for _ in range(4):
+                            if edgefun12(tile1) == edgefun2(tile2) and edgefun13(
+                                tile1
+                            ) == edgefun3(tile3):
+                                return  # and break out
+                            tile3.rot()
+                        tile3.flip()
+                    tile2.rot()
+                tile2.flip()
+            tile1.rot()
+        tile1.flip()
+    raise Exception("Yo, disse TRE kan ikke matches!")
+
+
 def orient_grid_properly(grid: [[Tile]], n: int):
-    """Actually the most self-explanatory part of this"""
+    """
+    Actually the most self-explanatory part of this
+    - me, a few hours ago
+    """
     # Special handling of 1st tile!
     head = grid[0][0]
     right_edge = next(
@@ -320,7 +375,17 @@ def orient_grid_properly(grid: [[Tile]], n: int):
     bottom_edge = next(
         e1 for e1, e2 in product(head.edges, grid[1][0].edges) if e1 == e1
     )
-    rotate_until_both_equal(head, right_edge, bottom_edge)
+    # rotate_until_both_equal(head, right_edge, bottom_edge)
+    # transform_until_equal(head, grid[0][1])
+    # transform_until_equal(
+    #     head, grid[1][0], lambda t: t.bottom_edge(), lambda t: t.top_edge()
+    # )
+    transform_until_equal3(head, grid[0][1], grid[1][0])
+    assert (
+        head.bottom_edge() == grid[1][0].top_edge()
+        and head.right_edge() == grid[0][1].left_edge()
+    )
+    print(head.orientation, head.flipped)
     # rotate_until_equal(head, right_edge, lambda t: t.right_edge())
     # rotate_until_equal(head, bottom_edge, lambda t: t.bottom_edge())
 
@@ -330,6 +395,12 @@ def orient_grid_properly(grid: [[Tile]], n: int):
             rotate_until_equal(
                 row[0], grid[i - 1][0].bottom_edge(), edgefun=lambda t: t.top_edge()
             )
+            # transform_until_equal(
+            #     row[0],
+            #     grid[i - 1][0],
+            #     lambda t: t.top_edge(),
+            #     lambda t: t.bottom_edge(),
+            # )
 
         # each tile must match the previous
         prev = row[0]
@@ -338,6 +409,7 @@ def orient_grid_properly(grid: [[Tile]], n: int):
                 tile,
                 prev.right_edge(),
             )
+            # transform_until_equal(tile, prev)
             prev = tile
 
 
@@ -346,11 +418,11 @@ def merge(grid: [[Tile]]) -> Tile:
     size = len(grid[0][0].content)
     for i, row in enumerate(grid):
         for _ in range(size):
-            lines.append("")
+            lines.append("O")
         for _, tile in enumerate(row):
             for k in range(size):
                 lines[i * (size + 1) + k] += tile.content[k] + "O"
-        lines.append("".join("O" * (size * len(grid) + 3)))
+        lines.append("".join("O" * (size * len(grid) + len(grid) + 1)))
     return Tile(0, lines)
 
 
