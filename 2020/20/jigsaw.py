@@ -6,6 +6,7 @@ Part one: An hour and a half? Really?
 """
 
 import math
+import re
 import sys
 from collections import Counter, defaultdict
 from enum import IntEnum
@@ -15,16 +16,17 @@ from pprint import pp
 import numpy as np
 from PIL import Image
 
-SEA_MONSTER = """__________________#_
-#____##____##____###
-_#__#__#__#__#__#___ """.split(
+SEA_MONSTER = """..................#.
+#....##....##....###
+.#..#..#..#..#..#...""".split(
     "\n"
 )
 
 COLOR = {
     "#": [171, 196, 171],
     ".": [21, 82, 112],
-    "O": [7, 43, 61],
+    "O": [220, 201, 182],
+    "B": [7, 43, 61],
 }
 
 
@@ -234,10 +236,9 @@ def assemble_grid(neighbours: {int: set}, n: int) -> [[int]]:
         prev = row[0]
         for j in range(1, n - 1):
             if i == 0:
-                cands = list(
+                row[j] = next(
                     t for t in sides if t not in used and t in neighbours[prev]
                 )
-                row[j] = cands[-1]
             elif i == n - 1:
                 row[j] = next(
                     t
@@ -289,46 +290,8 @@ def rotate_until_equal(tile: Tile, edge: str, edgefun=lambda t: t.left_edge()):
             if edgefun(tile) == edge:
                 return  # and break out
             tile.rot()
-        print("aaaaaaaaaaa")
         tile.flip()
-    raise Exception("Yo, disse kan ikke matches!")
-
-
-def rotate_until_both_equal(
-    tile: Tile,
-    edge1: str,
-    edge2: str,
-    edgefun1=lambda t: t.right_edge(),
-    edgefun2=lambda t: t.bottom_edge(),
-):
-    for _ in range(2):
-        for _ in range(4):
-            if edgefun1(tile) == edge1 and edgefun2(tile) == edge2:
-                return  # and break out
-            tile.rot()
-        tile.flip()
-    raise Exception("Yo, disse kan ikke matches!")
-
-
-def transform_until_equal(
-    tile1: Tile,
-    tile2: Tile,
-    edgefun1=lambda t: t.right_edge(),
-    edgefun2=lambda t: t.left_edge(),
-):
-    # Permutations of tile1
-    for _ in range(2):
-        for _ in range(4):
-            # Permutations of tile2
-            for _ in range(2):
-                for _ in range(4):
-                    if edgefun1(tile1) == edgefun2(tile2):
-                        return  # and break out
-                    tile2.rot()
-                tile2.flip()
-            tile1.rot()
-        tile1.flip()
-    raise Exception("Yo, disse TO kan ikke matches!")
+    raise Exception("Yo, these tiles can't match up!")
 
 
 def transform_until_equal3(
@@ -359,35 +322,23 @@ def transform_until_equal3(
                 tile2.flip()
             tile1.rot()
         tile1.flip()
-    raise Exception("Yo, disse TRE kan ikke matches!")
+    raise Exception("Yo, these THREE tiles can't match up!")
 
 
 def orient_grid_properly(grid: [[Tile]], n: int):
     """
     Actually the most self-explanatory part of this
-    - me, a few hours ago
+    - me, a few hours ago.
+    I did not have to change more than the initial alignment
+    to fix the problem, however.
     """
     # Special handling of 1st tile!
     head = grid[0][0]
-    right_edge = next(
-        e1 for e1, e2 in product(head.edges, grid[0][1].edges) if e1 == e1
-    )
-    bottom_edge = next(
-        e1 for e1, e2 in product(head.edges, grid[1][0].edges) if e1 == e1
-    )
-    # rotate_until_both_equal(head, right_edge, bottom_edge)
-    # transform_until_equal(head, grid[0][1])
-    # transform_until_equal(
-    #     head, grid[1][0], lambda t: t.bottom_edge(), lambda t: t.top_edge()
-    # )
     transform_until_equal3(head, grid[0][1], grid[1][0])
     assert (
         head.bottom_edge() == grid[1][0].top_edge()
         and head.right_edge() == grid[0][1].left_edge()
     )
-    print(head.orientation, head.flipped)
-    # rotate_until_equal(head, right_edge, lambda t: t.right_edge())
-    # rotate_until_equal(head, bottom_edge, lambda t: t.bottom_edge())
 
     for i, row in enumerate(grid):
         # handle beginning of line
@@ -395,12 +346,6 @@ def orient_grid_properly(grid: [[Tile]], n: int):
             rotate_until_equal(
                 row[0], grid[i - 1][0].bottom_edge(), edgefun=lambda t: t.top_edge()
             )
-            # transform_until_equal(
-            #     row[0],
-            #     grid[i - 1][0],
-            #     lambda t: t.top_edge(),
-            #     lambda t: t.bottom_edge(),
-            # )
 
         # each tile must match the previous
         prev = row[0]
@@ -409,11 +354,10 @@ def orient_grid_properly(grid: [[Tile]], n: int):
                 tile,
                 prev.right_edge(),
             )
-            # transform_until_equal(tile, prev)
             prev = tile
 
 
-def merge(grid: [[Tile]]) -> Tile:
+def merge_with_borders(grid: [[Tile]]) -> Tile:
     lines = []
     size = len(grid[0][0].content)
     for i, row in enumerate(grid):
@@ -426,6 +370,18 @@ def merge(grid: [[Tile]]) -> Tile:
     return Tile(0, lines)
 
 
+def merge(grid: [[Tile]]) -> Tile:
+    lines = []
+    size = len(grid[0][0].image)
+    for i, row in enumerate(grid):
+        for _ in range(size):
+            lines.append("")
+        for _, tile in enumerate(row):
+            for k in range(size):
+                lines[i * (size) + k] += tile.image[k]
+    return Tile(0, lines)
+
+
 def part_two(tiles: [Tile], neighbours):
     n = int(math.sqrt(len(tiles)))
     tilemap = {t.id: t for t in tiles}
@@ -434,9 +390,12 @@ def part_two(tiles: [Tile], neighbours):
     pp(grid)
     realgrid = [[tilemap[i] for i in row] for row in grid]
     orient_grid_properly(realgrid, n)
+    image = merge_with_borders(realgrid)
+    image.to_image("borders.png")
     image = merge(realgrid)
-    print(image)
-    image.to_image("haha.png")
+    image.to_image("merged.png")
+    # TODO: find the monsters!
+    return sum(1 for t in chain.from_iterable(image.content) if t == "#")
 
 
 def test_manipulation(tiles: [Tile]):
