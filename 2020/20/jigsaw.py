@@ -16,7 +16,7 @@ import re
 import sys
 from collections import Counter, defaultdict
 from enum import IntEnum
-from itertools import chain
+from itertools import chain, product
 
 import numpy as np
 from PIL import Image
@@ -290,12 +290,9 @@ def assemble_grid(neighbours: {int: set}, n: int) -> [[int]]:
 
 
 def rotate_until_equal(tile: Tile, edge: str, edgefun=lambda t: t.left_edge()):
-    for _ in range(2):
-        for _ in range(4):
-            if edgefun(tile) == edge:
-                return  # and break out
-            tile.rot()
-        tile.flip()
+    for _ in permutations_of(tile):
+        if edgefun(tile) == edge:
+            return  # and break out
     raise Exception("Yo, these tiles can't match up!")
 
 
@@ -308,25 +305,14 @@ def transform_until_equal3(
     edgefun2=lambda t: t.left_edge(),
     edgefun3=lambda t: t.top_edge(),
 ):
-    # Permutations of tile1
-    for _ in range(2):
-        for _ in range(4):
-            # Permutations of tile2
-            for _ in range(2):
-                for _ in range(4):
-                    # Permutations of tile3
-                    for _ in range(2):
-                        for _ in range(4):
-                            if edgefun12(tile1) == edgefun2(tile2) and edgefun13(
-                                tile1
-                            ) == edgefun3(tile3):
-                                return  # and break out
-                            tile3.rot()
-                        tile3.flip()
-                    tile2.rot()
-                tile2.flip()
-            tile1.rot()
-        tile1.flip()
+    # Permutations of tile1, tile2 and tile3
+    for _ in permutations_of(tile3):
+        for _ in permutations_of(tile2):
+            for _ in permutations_of(tile1):
+                if edgefun12(tile1) == edgefun2(tile2) and edgefun13(tile1) == edgefun3(
+                    tile3
+                ):
+                    return  # and break out
     raise Exception("Yo, these THREE tiles can't match up!")
 
 
@@ -365,12 +351,13 @@ def orient_grid_properly(grid: [[Tile]], n: int):
 def merge_with_borders(grid: [[Tile]]) -> Tile:
     lines = []
     size = len(grid[0][0].content)
+    lines.append("".join("B" * (size * len(grid) + len(grid) + 1)))
     for i, row in enumerate(grid):
         for _ in range(size):
             lines.append("B")
         for _, tile in enumerate(row):
             for k in range(size):
-                lines[i * (size + 1) + k] += tile.content[k] + "B"
+                lines[i * (size + 1) + k + 1] += tile.content[k] + "B"
         lines.append("".join("B" * (size * len(grid) + len(grid) + 1)))
     return Tile(0, lines)
 
@@ -401,8 +388,8 @@ def find_monsters(image: Tile) -> [(int, int)]:
     return monsters
 
 
-def permute_the_thing(image: Tile):
-    """Just used to check that I WAS NOT UTTERLY WRONG"""
+def permutations_of(image: Tile):
+    """Mutating iterator for stepping through permutations of a tile"""
     for _ in range(2):
         for _ in range(4):
             yield
@@ -412,13 +399,10 @@ def permute_the_thing(image: Tile):
 
 def find_monsters_in_permutations(image: Tile) -> [(int, int)]:
     """hahahahahahahahahahahahahahaaaa"""
-    for _ in range(2):
-        for _ in range(4):
-            monsters = find_monsters(image)
-            if len(monsters) > 0:
-                return monsters
-            image.rot()
-        image.flip()
+    for _ in permutations_of(image):
+        monsters = find_monsters(image)
+        if len(monsters) > 0:
+            return monsters
     raise Exception("Clean waters?")
 
 
@@ -452,7 +436,7 @@ def part_two(tiles: [Tile], neighbours):
     image.to_image("merged.png")
 
     # eeeeh
-    # for i, _ in enumerate(permute_the_thing(image)):
+    # for i, _ in enumerate(permutations_of(image)):
     #     monsters = find_monsters(image)
     #     clone = Tile(0, image.content[:])
     #     mark_monsters(monsters, clone)
