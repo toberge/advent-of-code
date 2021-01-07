@@ -16,7 +16,7 @@ import re
 import sys
 from collections import Counter, defaultdict
 from enum import IntEnum
-from itertools import chain, product
+from itertools import chain
 
 import numpy as np
 from PIL import Image
@@ -26,6 +26,8 @@ SEA_MONSTER = """..................#.
 .#..#..#..#..#..#...""".split(
     "\n"
 )
+
+MAKE_GIF = False
 
 COLOR = {
     "B": [32, 122, 167],
@@ -102,14 +104,15 @@ class Tile:
             lst.append(edge + "\n")
         return "".join(lst)
 
-    def to_image(self, filename):
+    def to_image(self, filename=None):
         img = Image.fromarray(
             np.uint8([[COLOR[bit] for bit in row] for row in self.content]),
             "RGB",
         )
-        img.resize(size=(img.width * 4, img.height * 4), resample=Image.NEAREST).save(
-            filename
-        )
+        img = img.resize(size=(img.width * 4, img.height * 4), resample=Image.NEAREST)
+        if filename is not None:
+            img.save(filename)
+        return img
 
     def flip(self):
         """Flip around y-axis"""
@@ -289,8 +292,12 @@ def assemble_grid(neighbours: {int: set}, n: int) -> [[int]]:
     return grid
 
 
-def rotate_until_equal(tile: Tile, edge: str, edgefun=lambda t: t.left_edge()):
+def rotate_until_equal(
+    tile: Tile, edge: str, edgefun=lambda t: t.left_edge(), action=None
+):
     for _ in permutations_of(tile):
+        if action is not None:
+            action()
         if edgefun(tile) == edge:
             return  # and break out
     raise Exception("Yo, these tiles can't match up!")
@@ -304,16 +311,30 @@ def transform_until_equal3(
     edgefun13=lambda t: t.bottom_edge(),
     edgefun2=lambda t: t.left_edge(),
     edgefun3=lambda t: t.top_edge(),
+    action=None,
 ):
     # Permutations of tile1, tile2 and tile3
     for _ in permutations_of(tile3):
         for _ in permutations_of(tile2):
             for _ in permutations_of(tile1):
+                if action is not None:
+                    action()
                 if edgefun12(tile1) == edgefun2(tile2) and edgefun13(tile1) == edgefun3(
                     tile3
                 ):
                     return  # and break out
     raise Exception("Yo, these THREE tiles can't match up!")
+
+
+def save_gif(filename: str, frames: [Image], duration=40):
+    frames[0].save(
+        filename,
+        save_all=True,
+        append_images=frames[1:],
+        optimize=False,
+        duration=duration,
+        loop=0,
+    )
 
 
 def orient_grid_properly(grid: [[Tile]], n: int):
@@ -323,9 +344,15 @@ def orient_grid_properly(grid: [[Tile]], n: int):
     I did not have to change more than the initial alignment
     to fix the problem, however.
     """
+    # gif creation!
+    if MAKE_GIF:
+        frames = [merge_with_borders(grid).to_image()]
+        save_frame = lambda: frames.append(merge_with_borders(grid).to_image())
+    else:
+        save_frame = None
     # Special handling of 1st tile!
     head = grid[0][0]
-    transform_until_equal3(head, grid[0][1], grid[1][0])
+    transform_until_equal3(head, grid[0][1], grid[1][0], action=save_frame)
     assert (
         head.bottom_edge() == grid[1][0].top_edge()
         and head.right_edge() == grid[0][1].left_edge()
@@ -335,17 +362,20 @@ def orient_grid_properly(grid: [[Tile]], n: int):
         # handle beginning of line
         if i > 0:
             rotate_until_equal(
-                row[0], grid[i - 1][0].bottom_edge(), edgefun=lambda t: t.top_edge()
+                row[0],
+                grid[i - 1][0].bottom_edge(),
+                edgefun=lambda t: t.top_edge(),
+                action=save_frame,
             )
 
         # each tile must match the previous
         prev = row[0]
         for tile in row[1:]:
-            rotate_until_equal(
-                tile,
-                prev.right_edge(),
-            )
+            rotate_until_equal(tile, prev.right_edge(), action=save_frame)
             prev = tile
+
+    if MAKE_GIF:
+        save_gif("alignment.gif", frames)
 
 
 def merge_with_borders(grid: [[Tile]]) -> Tile:
@@ -397,16 +427,20 @@ def permutations_of(image: Tile):
         image.flip()
 
 
-def find_monsters_in_permutations(image: Tile) -> [(int, int)]:
+def find_monsters_in_permutations(image: Tile, frames=None) -> [(int, int)]:
     """hahahahahahahahahahahahahahaaaa"""
     for _ in permutations_of(image):
+        if frames is not None:
+            # Sextuplicate the frame
+            # to make the rotations more visible
+            frames.extend([image.to_image()] * 6)
         monsters = find_monsters(image)
         if len(monsters) > 0:
             return monsters
-    raise Exception("Clean waters?")
+    raise Exception("Clean waters? No monsters found.")
 
 
-def mark_monsters(monsters: [(int, int)], image: Tile):
+def mark_monsters(monsters: [(int, int)], image: Tile, frames=None):
     """Horribly inefficient code, since each tile stores its stuff as a list of immutable strings"""
     for y, x in monsters:
         for dy, pattern in enumerate(SEA_MONSTER):
@@ -418,6 +452,8 @@ def mark_monsters(monsters: [(int, int)], image: Tile):
                         c if x + dx != ix else "O"
                         for ix, c in enumerate(image.content[y + dy])
                     )
+        if frames is not None:
+            frames.append(image.to_image())
 
 
 def part_two(tiles: [Tile], neighbours):
@@ -431,21 +467,22 @@ def part_two(tiles: [Tile], neighbours):
 
     # Orient image correctly
     orient_grid_properly(realgrid, n)
-    merge_with_borders(realgrid).to_image("borders.png")
+    if MAKE_GIF:
+        merge_with_borders(realgrid).to_image("borders.png")
     image = merge(realgrid)
-    image.to_image("merged.png")
-
-    # eeeeh
-    # for i, _ in enumerate(permutations_of(image)):
-    #     monsters = find_monsters(image)
-    #     clone = Tile(0, image.content[:])
-    #     mark_monsters(monsters, clone)
-    #     print(i, sum(1 for t in chain.from_iterable(clone.content) if t == "#"))
+    if MAKE_GIF:
+        image.to_image("merged.png")
 
     # Find those monsters
-    monsters = find_monsters_in_permutations(image)
-    mark_monsters(monsters, image)
-    image.to_image("monsters.png")
+    if MAKE_GIF:
+        frames = []
+    else:
+        frames = None
+    monsters = find_monsters_in_permutations(image, frames=frames)
+    mark_monsters(monsters, image, frames=frames)
+    if MAKE_GIF:
+        image.to_image("monsters.png")
+        save_gif("monsters.gif", frames, duration=80)
     return sum(1 for t in chain.from_iterable(image.content) if t == "#")
 
 
@@ -471,4 +508,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--gif":
+        MAKE_GIF = True
     main()

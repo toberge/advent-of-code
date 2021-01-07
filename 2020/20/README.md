@@ -27,14 +27,14 @@ Can I rotate an image?
 
 ## Visuals
 
-With borders and grid:  
-![with borders](borders.png)
+Rotating and flipping, with borders:  
+![with borders](alignment.gif)
 
 Merged to one image:  
 ![assembled](merged.png)
 
-Sea monsters:  
-![with monsters](monsters.png)
+Searching for sea monsters:  
+![with monsters](monsters.gif)
 
 ## Then, finally...
 
