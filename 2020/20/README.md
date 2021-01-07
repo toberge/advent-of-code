@@ -28,7 +28,8 @@ Can I rotate an image?
 ## Visuals
 
 Rotating and flipping, with borders:  
-![with borders](alignment.gif)
+![with borders](alignment.gif)  
+(compressed using a script from [this page](https://cassidy.codes/blog/2017/04/25/ffmpeg-frames-to-gif-optimization/), it was 70 MB before)
 
 Merged to one image:  
 ![assembled](merged.png)
