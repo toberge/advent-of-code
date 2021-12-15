@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from itertools import product
 
 
-@dataclass
+@dataclass(repr=False)
 class Tile:
     x: int
     y: int
@@ -26,6 +26,9 @@ class Tile:
 
     def __hash__(self):
         return self.x + 10000 * self.y
+
+    def __repr__(self):
+        return str(self.risk)
 
 
 def neighbours(tile: Tile, cave: List[List[Tile]]) -> List[Tile]:
@@ -90,8 +93,26 @@ def add_neighbours(cave):
             tile.neighbours = neighbours(tile, cave)
 
 
+def upscaled_cave(cave: List[List[Tile]], factor=5) -> List[List[Tile]]:
+    """Scale cave to 5x the size"""
+    xlen = len(cave[0])
+    ylen = len(cave)
+    return [
+        [
+            Tile(
+                x,
+                y,
+                (1 + (cave[y % ylen][x % xlen].risk + x // xlen + y // ylen - 1) % 9),
+            )
+            for x in range(factor * xlen)
+        ]
+        for y in range(factor * ylen)
+    ]
+
+
 def main():
     cave = make_cave(sys.stdin.readlines())
+    cave = upscaled_cave(cave)
     add_neighbours(cave)
     lowest_risk = dijkstra(cave)
     print(lowest_risk)
