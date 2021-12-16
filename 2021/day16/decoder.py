@@ -1,11 +1,30 @@
 from typing import List
+from functools import partial, reduce
+from operator import mul
+
+"""
+Day 16 - Building and evaluating a syntax tree, basically
+"""
 
 LITERAL_TYPE = 0b100
+
+operations = {
+    0: sum,
+    1: partial(reduce, mul),  # product
+    2: min,
+    3: max,
+    5: lambda xs: int(xs[0] > xs[1]),
+    6: lambda xs: int(xs[0] < xs[1]),
+    7: lambda xs: int(xs[0] == xs[1]),
+}
 
 
 class Packet:
     def __init__(self, version: int):
         self.version = version
+
+    def eval(self):
+        raise NotImplementedError
 
 
 class LiteralPacket(Packet):
@@ -13,11 +32,18 @@ class LiteralPacket(Packet):
         super().__init__(version)
         self.value = value
 
+    def eval(self):
+        return self.value
+
 
 class OperatorPacket(Packet):
-    def __init__(self, version: int, packets: List[Packet]):
+    def __init__(self, version: int, opcode: int, packets: List[Packet]):
         super().__init__(version)
+        self.opcode = opcode
         self.packets = packets
+
+    def eval(self):
+        return operations[self.opcode]([p.eval() for p in self.packets])
 
 
 def extract(byte, amount, start):
@@ -75,9 +101,9 @@ class BitStream:
         if type_id == LITERAL_TYPE:
             return self.read_literal(version)
         else:
-            return self.read_operator(version)
+            return self.read_operator(version, type_id)
 
-    def read_operator(self, version: int):
+    def read_operator(self, version: int, opcode: int):
         length_type = self.read_number()
         if length_type == 1:
             # number of subpackets
@@ -90,7 +116,7 @@ class BitStream:
             start = self.bits_read
             while self.bits_read < start + length:
                 packets.append(self.read_packet())
-        return OperatorPacket(version, packets)
+        return OperatorPacket(version, opcode, packets)
 
     def read_literal(self, version: int):
         leading_bit = 1
@@ -114,6 +140,7 @@ def main():
 
     root_packet = stream.read_packet()
     print("Part 1:", version_sum(root_packet))
+    print("Part 2:", root_packet.eval())
 
 
 if __name__ == "__main__":
