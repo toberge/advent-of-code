@@ -11,6 +11,9 @@ dots = [
 shape = (max(dots, key=lambda x: x[1])[1] + 1, max(dots, key=lambda x: x[0])[0] + 1)
 paper = np.ndarray(shape, dtype=bool)
 paper[:, :] = 0
+for x, y in dots:
+    paper[y, x] = True
+
 
 print(shape)
 
@@ -23,14 +26,6 @@ def show(paper: np.ndarray):
         print()
 
 
-for x, y in dots:
-    paper[y, x] = True
-
-
-# show(paper)
-# print(paper.shape)
-
-
 def flip(paper, index, axis=0):
     size = index
     end = max(paper.shape[axis] - 1, 2 * size)
@@ -38,17 +33,29 @@ def flip(paper, index, axis=0):
     print(size, end, padding)
 
     if axis == 0:
-        show(paper[:size, :])
-        print("aaa")
-        show(
-            np.pad(
-                np.flip(paper[size:, :], axis)[: end - size, :], ((0, padding), (0, 0))
+        if size < 30:
+            show(paper[:size, :])
+            print("------")
+            show(
+                np.pad(
+                    np.flip(paper[size:, :], axis)[: end - size, :],
+                    ((0, padding), (0, 0)),
+                )
             )
-        )
-        print("aaa")
+            print("aaa")
         return paper[:size, :] | np.pad(
             np.flip(paper[size:, :], axis)[: end - size, :], ((0, padding), (0, 0))
         )
+    if size < 30:
+        show(paper[:, :size])
+        print("------")
+        show(
+            np.pad(
+                np.flip(paper[:, size:], axis)[:, : end - size],
+                ((0, 0), (0, padding)),
+            )
+        )
+        print("aaa")
     return paper[:, :size] | np.pad(
         np.flip(paper[:, size:], axis)[:, : end - size], ((0, 0), (0, padding))
     )
@@ -60,7 +67,7 @@ while line != "\n":
     line = next(it)
 line = next(it)
 command = line.replace("fold along ", "")[:-1].split("=")
-print(command)
 paper = flip(paper, int(command[1]), axis=int(command[0] == "x"))
-show(paper)
+if max(shape) < 30:
+    show(paper)
 print(np.count_nonzero(paper))
