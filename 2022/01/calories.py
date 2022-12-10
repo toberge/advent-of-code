@@ -9,4 +9,4 @@ for line in sys.stdin.readlines():
         elves.append(0)
 
 print("Part 1:", max(elves))
-print("Part 2:", sum(list(sorted(elves))[-3:]))
+print("Part 2:", sum(sorted(elves)[-3:]))
