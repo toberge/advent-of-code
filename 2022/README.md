@@ -14,39 +14,41 @@ Solutions written in Haskell and other languages might have a different method o
 🆗 : Finished, but a little late  
 ⭐ : Free star
 
+Delta is time between finishing part 1 and 2.
+
 Languages: Python (🐍), Haskell (λ), C++ (➕)
 
-| Puzzle | Part 1 | Part 2 | Late   |   Time | Language |
-| ------ | ------ | ------ | ------ | -----: | -------- |
-| Day 1  | ✔      | ✔      |        |  26 ms | 🐍       |
-| Day 2  | ✔      | ✔      |        |  62 ms | 🐍       |
-| Day 3  | ✔      | ✔      |        |  55 ms | 🐍       |
-| Day 4  | ✔      | ✔      |        |  30 ms | 🐍       |
-| Day 5  | ✔      | ✔      |        |  24 ms | 🐍       |
-| Day 6  | ✔      | ✔      |        |  27 ms | 🐍       |
-| Day 7  | ✔      | ✔      |        |  37 ms | 🐍       |
-| Day 8  | 🆗     | 🆗     | Day 9  | 141 ms | 🐍       |
-| Day 9  | ✔      | ✔      |        | 239 ms | 🐍       |
-| Day 10 | ✔      | ✔      |        |  58 ms | 🐍       |
-| Day 11 |        |        |        |        |          |
-| Day 12 |        |        |        |        |          |
-| Day 13 |        |        |        |        |          |
-| Day 14 |        |        |        |        |          |
-| Day 15 |        |        |        |        |          |
-| Day 16 |        |        |        |        |          |
-| Day 17 |        |        |        |        |          |
-| Day 18 |        |        |        |        |          |
-| Day 19 |        |        |        |        |          |
-| Day 20 |        |        |        |        |          |
-| Day 21 |        |        |        |        |          |
-| Day 22 |        |        |        |        |          |
-| Day 23 |        |        |        |        |          |
-| Day 24 |        |        |        |        |          |
-| Day 25 |        |        |        |        |          |
+| Puzzle | Part 1 | Part 2 | Delta | Late   | Time   | Language | Comment                                                               |
+| ------ | ------ | ------ | ----: | ------ | -----: | -------- | --------------------------------------------------------------------- |
+| Day 1  | ✔      | ✔      | 01:52 |        | 26 ms  | 🐍       |                                                                       |
+| Day 2  | ✔      | ✔      | 06:33 |        | 62 ms  | 🐍       |                                                                       |
+| Day 3  | ✔      | ✔      | 07:49 |        | 55 ms  | 🐍       |                                                                       |
+| Day 4  | ✔      | ✔      | 03:36 |        | 30 ms  | 🐍       |                                                                       |
+| Day 5  | ✔      | ✔      | 01:00 |        | 24 ms  | 🐍       |                                                                       |
+| Day 6  | ✔      | ✔      | 07:02 |        | 27 ms  | 🐍       | Spent less than 7 minutes on part 2, but had to postpone answer input |
+| Day 7  | ✔      | ✔      | 08:58 |        | 37 ms  | 🐍       |                                                                       |
+| Day 8  | 🆗     | 🆗     | 58:35 | Day 9  | 141 ms | 🐍       | Spent too much time doing dynamic programming when brute force worked |
+| Day 9  | ✔      | ✔      | 12:38 |        | 239 ms | 🐍       |                                                                       |
+| Day 10 | ✔      | ✔      | 16:58 |        | 58 ms  | 🐍       |                                                                       |
+| Day 11 | ✔      | ✔      | 08:14 |        | 4.2 s  | 🐍       |                                                                       |
+| Day 12 |        |        |       |        |        |          |                                                                       |
+| Day 13 |        |        |       |        |        |          |                                                                       |
+| Day 14 |        |        |       |        |        |          |                                                                       |
+| Day 15 |        |        |       |        |        |          |                                                                       |
+| Day 16 |        |        |       |        |        |          |                                                                       |
+| Day 17 |        |        |       |        |        |          |                                                                       |
+| Day 18 |        |        |       |        |        |          |                                                                       |
+| Day 19 |        |        |       |        |        |          |                                                                       |
+| Day 20 |        |        |       |        |        |          |                                                                       |
+| Day 21 |        |        |       |        |        |          |                                                                       |
+| Day 22 |        |        |       |        |        |          |                                                                       |
+| Day 23 |        |        |       |        |        |          |                                                                       |
+| Day 24 |        |        |       |        |        |          |                                                                       |
+| Day 25 |        |        |       |        |        |          |                                                                       |
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **0.699** seconds  
+Current total: Around **4.899** seconds  
 Goal: Less than **30** seconds
 
-(Estimates summed with [sum.sh](../2020/sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
+(Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
