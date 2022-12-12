@@ -31,7 +31,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 | Day 9  | ✔      | ✔      | 12:38 |        | 239 ms | 🐍       |                                                                       |
 | Day 10 | ✔      | ✔      | 16:58 |        | 58 ms  | 🐍       |                                                                       |
 | Day 11 | ✔      | ✔      | 08:14 |        | 4.2 s  | 🐍       |                                                                       |
-| Day 12 |        |        |       |        |        |          |                                                                       |
+| Day 12 | ✔      | ✔      | 07:27 |        | 857 ms | 🐍       |                                                                       |
 | Day 13 |        |        |       |        |        |          |                                                                       |
 | Day 14 |        |        |       |        |        |          |                                                                       |
 | Day 15 |        |        |       |        |        |          |                                                                       |
@@ -48,7 +48,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **4.899** seconds  
+Current total: Around **5.756** seconds  
 Goal: Less than **30** seconds
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
