@@ -14,7 +14,9 @@ Solutions written in Haskell and other languages might have a different method o
 🆗 : Finished, but a little late  
 ⭐ : Free star
 
-Delta is time between finishing part 1 and 2.
+Delta: Time between finishing part 1 and 2  
+Late: The day I finished the task, if it wasn't the day the task was given  
+Time: Execution time, measured with `time`
 
 Languages: Python (🐍), Haskell (λ), C++ (➕)
 
@@ -32,7 +34,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 | Day 10 | ✔      | ✔      | 16:58 |        | 58 ms  | 🐍       |                                                                       |
 | Day 11 | ✔      | ✔      | 08:14 |        | 4.2 s  | 🐍       |                                                                       |
 | Day 12 | ✔      | ✔      | 07:27 |        | 857 ms | 🐍       |                                                                       |
-| Day 13 |        |        |       |        |        |          |                                                                       |
+| Day 13 | ✔      | ✔      | 11:43 |        |  44 ms | 🐍       | Abused eval(), exceptions and sorting                                 |
 | Day 14 |        |        |       |        |        |          |                                                                       |
 | Day 15 |        |        |       |        |        |          |                                                                       |
 | Day 16 |        |        |       |        |        |          |                                                                       |
@@ -48,7 +50,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **5.756** seconds  
+Current total: Around **5.800** seconds  
 Goal: Less than **30** seconds
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
