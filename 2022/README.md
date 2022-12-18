@@ -36,10 +36,10 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 | Day 12 | ✔      | ✔      | 07:27 |        | 857 ms | 🐍       |                                                                       |
 | Day 13 | ✔      | ✔      | 11:43 |        | 44 ms  | 🐍       | Abused generators, eval(), exceptions and sorting                     |
 | Day 14 | ✔      | ✔      | 48:18 |        | 2.9 s  | 🐍       | Bus ride interrupted this time smh                                    |
-| Day 15 |        |        |       |        |        |          |                                                                       |
+| Day 15 | ✔      |        |       |        |        |          |                                                                       |
 | Day 16 |        |        |       |        |        |          |                                                                       |
 | Day 17 |        |        |       |        |        |          |                                                                       |
-| Day 18 |        |        |       |        |        |          |                                                                       |
+| Day 18 | ✔      | ✔      | 34:06 |        | 155 ms | 🐍       |                                                                       |
 | Day 19 |        |        |       |        |        |          |                                                                       |
 | Day 20 |        |        |       |        |        |          |                                                                       |
 | Day 21 |        |        |       |        |        |          |                                                                       |
@@ -50,7 +50,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **8.700** seconds  
+Current total: Around **8.655** seconds  
 Goal: Less than **30** seconds
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
