@@ -42,15 +42,15 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 | Day 18 | ✔      | ✔      | 34:06 |        | 155 ms | 🐍       |                                                                       |
 | Day 19 |        |        |       |        |        |          |                                                                       |
 | Day 20 |        |        |       |        |        |          |                                                                       |
-| Day 21 | ✔      | ✔      | 57:02 |        |  79 ms | 🐍       | Dinner break. Had to redo as tree.                                    |
+| Day 21 | ✔      | ✔      | 57:02 |        | 79 ms  | 🐍       | Dinner break. Had to redo as tree.                                    |
 | Day 22 |        |        |       |        |        |          |                                                                       |
-| Day 23 |        |        |       |        |        |          |                                                                       |
+| Day 23 | ✔      | ✔      | 01:48 |        | 48.8 s | 🐍       | This year's game of life variant. Wrote elegant but slow code 🙃      |
 | Day 24 |        |        |       |        |        |          |                                                                       |
 | Day 25 |        |        |       |        |        |          |                                                                       |
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **8.734** seconds  
-Goal: Less than **30** seconds
+Current total: Around **57.734** seconds  
+Goal: Less than **30** seconds (**needs some optimization**)
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
