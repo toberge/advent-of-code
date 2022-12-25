@@ -46,11 +46,11 @@ Languages: Python (🐍), Haskell (λ), C++ (➕)
 | Day 22 |        |        |       |        |        |          |                                                                       |
 | Day 23 | ✔      | ✔      | 01:48 |        | 48.8 s | 🐍       | This year's game of life variant. Wrote elegant but slow code 🙃      |
 | Day 24 |        |        |       |        |        |          |                                                                       |
-| Day 25 |        |        |       |        |        |          |                                                                       |
+| Day 25 | ✔      |        | -     |        | 57 ms  | 🐍       |                                                                       |
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **57.734** seconds  
+Current total: Around **57.791** seconds  
 Goal: Less than **30** seconds (**needs some optimization**)
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
