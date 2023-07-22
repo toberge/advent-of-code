@@ -6,6 +6,13 @@ from operator import itemgetter
 # ore, clay, obsidian, geode
 Cost = tuple[int, int, int, int]
 
+robot_names = {
+    0: "ore",
+    1: "clay",
+    2: "obsidian",
+    3: "geode",
+}
+
 
 @dataclass
 class Blueprint:
@@ -26,29 +33,22 @@ class Blueprint:
         return tuple(stored + mined for mined, stored in zip(robots, inventory))
 
     def evaluate(self) -> int:
-        # minutes[minute][orebots][claybots][obsidianbots][geodebots]
-        # minutes[minute+1] = all possibilities? that could be expensive
-        minutes: list[dict[Cost, Cost]] = [{(1, 0, 0, 0): (0, 0, 0, 0)}]
-        for minute in range(24):
-            minutes.append(dict())
-            for robots, resources in minutes[minute].items():
-                minutes[minute + 1][robots] = self.mine(robots, resources)
-                for robot, recipe in enumerate(self.recipes):
-                    print("can build", robot, "?")
-                    if self.can_build(recipe, resources):
-                        print("yes")
-                        with_robot = tuple(
-                            count + 1 if i == robot else count
-                            for i, count in enumerate(robots)
-                        )
-                        # Find max of this and other solution with same robot set
-                        proposal = self.mine(robots, self.build(recipe, resources))
-                        other = minutes[minute + 1].get(with_robot)
-                        if other is not None:
-                            minutes[minute + 1][with_robot] = max(proposal, other)
-                        else:
-                            minutes[minute + 1][with_robot] = proposal
-        return max(inventory[3] for inventory in minutes[-1].values())
+        robots = (1, 0, 0, 0)
+        resources = (0, 0, 0, 0)
+        for i in range(24):
+            print(f"Minute {i}")
+            for robot, recipe in reversed(list(enumerate(self.recipes))):
+                print(robot, recipe)
+                if self.can_build(recipe, resources):
+                    print(f"built a {robot_names[robot]} collecting robot")
+                    resources = self.build(recipe, resources)
+                    robots = tuple(
+                        count + 1 if i == robot else count
+                        for i, count in enumerate(robots)
+                    )
+            resources = self.mine(robots, resources)
+            print(f"Got {resources}")
+        return resources[3]
 
 
 print(Blueprint().evaluate())
