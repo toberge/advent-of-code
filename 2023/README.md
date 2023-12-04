@@ -25,7 +25,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 | Day 1  | ✔      | ✔      | 1:03:54 |        | 16 ms  | 🐚       |                                      |
 | Day 2  | ✔      | ✔      | 05:01   |        | 8 ms   | λ        |                                      |
 | Day 3  | ✔      |        |         |        |        | 🐍       |                                      |
-| Day 4  |        |        |         |        |        |          |                                      |
+| Day 4  | ✔      | ✔      | 39:32   |        | 6.45 s | 🐍       |                                      |
 | Day 5  |        |        |         |        |        |          |                                      |
 | Day 6  |        |        |         |        |        |          |                                      |
 | Day 7  |        |        |         |        |        |          |                                      |
@@ -50,7 +50,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **24** milliseconds  
+Current total: Around **6.474** seconds  
 Goal: Less than **30** seconds
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
