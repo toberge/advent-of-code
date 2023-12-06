@@ -13,7 +13,6 @@ Solutions written in Haskell, Bourne Shell and other languages might have a diff
 ✔ : Finished on time  
 🆗 : Finished, but a little late  
 ⭐ : Free star
-
 Delta: Time between finishing part 1 and 2  
 Late: The day I finished the task, if it wasn't the day the task was given  
 Time: Execution time, measured with `time`
@@ -22,12 +21,12 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 
 | Puzzle | Part 1 | Part 2 | Delta   | Late   | Time   | Language | Comment                              |
 | ------ | ------ | ------ | ------: | ------ | -----: | -------- | ------------------------------------ |
-| Day 1  | ✔      | ✔      | 1:03:54 |        | 16 ms  | 🐚       |                                      |
+| Day 1  | ✔      | ✔      | 1:03:54 |        | 16 ms  | 🐚       | All the sed                          |
 | Day 2  | ✔      | ✔      | 05:01   |        | 8 ms   | λ        |                                      |
 | Day 3  | ✔      | 🆗     | 1 day   | Day 4  | 367 ms | 🐍       | Off-by-one lead to too few gears     |
-| Day 4  | ✔      | ✔      | 39:32   |        | 6.45 s | 🐍       |                                      |
-| Day 5  |        |        |         |        |        |          |                                      |
-| Day 6  |        |        |         |        |        |          |                                      |
+| Day 4  | ✔      | ✔      | 39:32   |        | 6.45 s | 🐍       | Part 2 solved in a hilarious way     |
+| Day 5  | ✔      |        |         |        | ?      | 🐍       | Too little time smh                  |
+| Day 6  | ✔      | ✔      | 00:16   |        | 21 m s | 🐍       | This day is O(1)                     |
 | Day 7  |        |        |         |        |        |          |                                      |
 | Day 8  |        |        |         |        |        |          |                                      |
 | Day 9  |        |        |         |        |        |          |                                      |
@@ -50,7 +49,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **6.474** seconds  
+Current total: Around **6.495** seconds  
 Goal: Less than **30** seconds
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
