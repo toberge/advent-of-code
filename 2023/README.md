@@ -1,18 +1,19 @@
 # Advent of Code 2023
 
-Python files read from `stdin` and can be run like this:
+Python and Haskell solutions read from `stdin` and can be run like this:
 
 ```sh
-python part_one.py < input.dat
+python solution.py < input.dat
+ghc Solution.hs && ./Solution < input.dat
 ```
 
-Solutions written in Haskell, Bourne Shell and other languages might have a different method of receiving a file – typically as an argument or through `stdin`.
+Solutions written in other languages usually read from `stdin`, but might have a different method of receiving a file.
 
 ## Scoreboard
 
 ✔ : Finished on time  
 🆗 : Finished, but a little late  
-⭐ : Free star
+⭐ : Free star  
 Delta: Time between finishing part 1 and 2  
 Late: The day I finished the task, if it wasn't the day the task was given  
 Time: Execution time, measured with `time`
@@ -25,7 +26,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 | Day 2  | ✔      | ✔      | 05:01   |        | 8 ms   | λ        | Haskelled                            |
 | Day 3  | ✔      | 🆗     | 1 day   | Day 4  | 367 ms | 🐍       | Off-by-one lead to too few gears     |
 | Day 4  | ✔      | ✔      | 39:32   |        | 6.45 s | 🐍       | Part 2 solved in a hilarious way     |
-| Day 5  | ✔      |        |         |        | ?      | 🐍       | Too little time smh                  |
+| Day 5  | ✔      | 🆗     | 4 days  | Day 9  | 71 ms  | 🐍       | Bugs + too little time = postponed   |
 | Day 6  | ✔      | ✔      | 00:16   |        | 21 ms  | 🐍       | This day is O(1)                     |
 | Day 7  | ✔      | ✔      | 37:38   |        | 2.02 s | 🐍       | Pattern matching woohoo!             |
 | Day 8  | ✔      | ✔      | 1:23:54 |        | 49 ms  | 🐍       | gcd ftw                              |
@@ -49,7 +50,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **8.998** seconds  
+Current total: Around **9.069** seconds  
 Goal: Less than **30** seconds
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
