@@ -29,7 +29,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 | Day 6  | ✔      | ✔      | 00:16   |        | 21 ms  | 🐍       | This day is O(1)                     |
 | Day 7  | ✔      | ✔      | 37:38   |        | 2.02 s | 🐍       | Pattern matching woohoo!             |
 | Day 8  | ✔      | ✔      | 1:23:54 |        | 49 ms  | 🐍       | gcd ftw                              |
-| Day 9  |        |        |         |        |        |          |                                      |
+| Day 9  | ✔      | ✔      | 00:07   |        | 67 ms  | 🐍       | Why was this so simple?              |
 | Day 10 |        |        |         |        |        |          |                                      |
 | Day 11 |        |        |         |        |        |          |                                      |
 | Day 12 |        |        |         |        |        |          |                                      |
@@ -49,7 +49,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **8.931** seconds  
+Current total: Around **8.998** seconds  
 Goal: Less than **30** seconds
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
