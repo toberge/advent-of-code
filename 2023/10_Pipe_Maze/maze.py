@@ -14,6 +14,9 @@ class coord:
     def __neg__(self) -> "coord":
         return coord(-self.x, -self.y)
 
+    def is_real(self) -> bool:
+        return self.x % 2 == 0 and self.y % 2 == 0
+
 
 left = coord(-1, 0)
 right = coord(1, 0)
@@ -42,6 +45,29 @@ pipe_to_deltas = {
     "F": (right, down),
 }
 
+right_extension_of = {
+    "|": ".",
+    "-": "-",
+    "7": ".",
+    "J": ".",
+    "L": "-",
+    "F": "-",
+    "S": "-",
+    ".": ".",
+}
+
+
+down_extension_of = {
+    "|": "|",
+    "-": ".",
+    "7": "|",
+    "J": ".",
+    "L": ".",
+    "F": "|",
+    "S": "|",
+    ".": ".",
+}
+
 
 @dataclass
 class Node:
@@ -49,7 +75,6 @@ class Node:
     position: coord
     left: coord
     right: coord
-    in_loop: bool = False
 
     @staticmethod
     def parse(pipe: str, position: coord, island: list[str]) -> "Node":
@@ -69,7 +94,7 @@ class Node:
                 except KeyError:
                     continue
             print("S node leads to", neighbors)
-            return Node(pipe, position, neighbors[0], neighbors[1], in_loop=True)
+            return Node(pipe, position, neighbors[0], neighbors[1])
 
         deltas = pipe_to_deltas[pipe]
         return Node(pipe, position, position + deltas[0], position + deltas[1])
@@ -83,6 +108,7 @@ class Node:
 
 
 class Loop:
+    island: list[str]
     nodes: dict[coord, Node]
     start: Node
     in_loop: set[coord]
@@ -90,15 +116,19 @@ class Loop:
     outside: set[coord]
     height: int
     width: int
+    verbose: bool
 
-    def __init__(self, island: list[str]):
+    def __init__(self, island: list[str], verbose=False):
+        self.verbose = verbose
         self.nodes = {}
+        self.island = island
         self.inside = set()
         self.outside = set()
-        height = len(island)
-        width = len(island[0])
-        for y in range(height):
-            for x in range(width):
+        self.in_loop = set()
+        self.height = len(island)
+        self.width = len(island[0])
+        for y in range(self.height):
+            for x in range(self.width):
                 pipe = island[y][x]
                 if pipe == ".":
                     continue
@@ -116,9 +146,9 @@ class Loop:
         visited = {self.start.position}
         steps = 0
 
+        self.in_loop.add(self.start.position)
+
         while left.position not in visited and right.position not in visited:
-            left.in_loop = True
-            right.in_loop = True
             self.in_loop.add(left.position)
             self.in_loop.add(right.position)
 
@@ -133,60 +163,106 @@ class Loop:
             left = self.nodes[left_next]
             right = self.nodes[right_next]
             steps += 1
-        return steps
-
-    def squeeze_through(self, start: coord) -> coord:
-        # TODO go in direction away from inside, check for non-loop along side
-        #      then follow whichever direction you end up with, still checking the same side
-        # TODO OR JUST MAYBE SCALE UP THE ENTIRE MAP SO YOU DON'T NEED THE SQUEEZE CHECK
-        #      (means that only nodes that are at even coords in both dirs are real)
-        return coord(-1, -1)
+        # Since we're doing this on the upscaled island, there are half as many steps
+        return steps // 2
 
     def is_valid(self, position: coord) -> bool:
         return 0 <= position.x < self.width and 0 <= position.y < self.height
 
     def neighbors(self, position: coord) -> Iterable[coord]:
-        return (position + d for d in neighbor_deltas if self.is_valid(position + d))
+        return (position + d for d in cardinal_deltas if self.is_valid(position + d))
 
     def bfs(self, start: coord, already_visited: set[coord]) -> tuple[set[coord], bool]:
         stack = [start]
         visited = set()
         is_in_loop = True
         while len(stack) > 0:
-            # TODO in_loop -> call squeeze_through somehow
             pos = stack.pop()
-            if pos in visited:
-                continue
-            if pos in already_visited:
-                # TODO this is unnecessary if you extend the thing
-                if pos in self.in_loop:
-                    # TODO also add squeezed nodes to visited
-                    output = self.squeeze_through(pos)
-                    if output is not None:
-                        stack.append(output)
+            if pos in self.outside:
+                is_in_loop = False
+            if pos in visited or pos in already_visited:
                 continue
             visited.add(pos)
-            stack.extend(c for c in self.neighbors(pos) if c not in visited)
+            # TODO limit how far it reaches so we don't add visited nodes multiple times?
+            stack.extend(self.neighbors(pos))
         return visited, is_in_loop
 
-    def positions_outside_loop(self) -> int:
+    def positions_inside_loop(self) -> int:
+        # TODO do this elsewhere?
+        # Outer rim is always outside!
+        self.outside.update(
+            coord(x, 0) for x in range(self.width) if not coord(x, 0) in self.in_loop
+        )
+        self.outside.update(
+            coord(x, self.height - 1)
+            for x in range(self.width)
+            if not coord(x, self.height - 1) in self.in_loop
+        )
+        self.outside.update(
+            coord(0, y) for y in range(self.height) if not coord(0, y) in self.in_loop
+        )
+        self.outside.update(
+            coord(self.width - 1, y)
+            for y in range(self.height)
+            if not coord(self.width - 1, y) in self.in_loop
+        )
+
         visited = set(self.in_loop)
-        for pos in (coord(x, y) for x in range(self.height) for y in range(self.width)):
+        visited.update(self.outside)
+
+        for pos in (
+            coord(x, y)
+            for x in range(1, self.height - 1)
+            for y in range(1, self.width - 1)
+        ):
             if pos in visited:
                 continue
             visits, is_in_loop = self.bfs(pos, visited)
-            visited = visited.union(visits)
             if is_in_loop:
-                self.inside = self.inside.union(visits)
+                self.inside.update(visits.difference(visited))
             else:
-                self.outside = self.outside.union(visits)
+                self.outside.update(visits.difference(visited))
+            visited.update(visits)
 
-        return len(self.inside)
+        if self.verbose:
+            for y, line in enumerate(self.island):
+                for x, c in enumerate(line):
+                    if not coord(x, y).is_real():
+                        continue
+                    p = (
+                        "\x1b[1;33mI\x1b[37m"
+                        if coord(x, y) in self.inside and coord(x, y).is_real()
+                        else c
+                    )
+                    print(p, end="")
+                if coord(0, y).is_real():
+                    print()
+        return len([pos for pos in self.inside if pos.is_real() and self.is_valid(pos)])
+
+
+def upscaled(island: list[str]) -> list[str]:
+    upscaled = []
+    for line in island:
+        upper = []
+        for c in line:
+            upper.append(c)
+            upper.append(right_extension_of[c])
+        upscaled.append("".join(upper))
+        lower = []
+        for c in line:
+            lower.append(down_extension_of[c])
+            lower.append(".")
+        upscaled.append("".join(lower))
+    # TODO fix area around S!
+    return upscaled
 
 
 if __name__ == "__main__":
     island = [l.strip() for l in sys.stdin.readlines()]
+    island = upscaled(island)
     loop = Loop(island)
+    # loop.verbose = True
     steps = loop.steps_along_loop()
     print("Part 1:", steps)
-    steps = loop.steps_along_loop()
+    positions_inside = loop.positions_inside_loop()
+    print("Part 2:", positions_inside)
