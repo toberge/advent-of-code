@@ -32,7 +32,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 | Day 8  | ✔      | ✔      | 1:23:54 |        | 49 ms  | 🐍       | gcd ftw                              |
 | Day 9  | ✔      | ✔      | 00:07   |        | 67 ms  | 🐍       | Why was this so simple?              |
 | Day 10 | ✔      | ✔      | 02:02   |        | 664 ms | 🐍       | Upscaled for ez squeeze              |
-| Day 11 |        |        |         |        |        |          |                                      |
+| Day 11 | ✔      | ✔      | 00:07   |        | 59 ms  | 🐍       |                                      |
 | Day 12 |        |        |         |        |        |          |                                      |
 | Day 13 |        |        |         |        |        |          |                                      |
 | Day 14 |        |        |         |        |        |          |                                      |
@@ -50,7 +50,7 @@ Languages: Python (🐍), Haskell (λ), C++ (➕), Bourne Shell (🐚)
 
 (Table generated with this macro: `'mhye<c-a><c-o>vepbhj`)
 
-Current total: Around **9.169** seconds  
+Current total: Around **9.792** seconds  
 Goal: Less than **30** seconds
 
 (Estimates summed with [sum.sh](sum.sh) which uses [sum.awk](../2020/sum.awk) from 2020)
