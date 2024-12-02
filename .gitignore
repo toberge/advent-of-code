@@ -1,6 +1,7 @@
 # General
 a.out
 *.o
+*.exe
 
 # Python
 __pycache__
