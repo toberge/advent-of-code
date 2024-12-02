@@ -12,16 +12,13 @@ safeOrder :: [Int] -> Bool
 safeOrder xs = ascending || descending
     where 
         right = tail xs
-        left = take (length xs - 1) xs
-        ascending = all id $ zipWith (<) left right
-        descending = all id $ zipWith (>) left right
+        ascending = all id $ zipWith (<) xs right
+        descending = all id $ zipWith (>) xs right
 
 safeReport :: [Int] -> Bool
 safeReport xs = allSafeInterval && safeOrder xs
     where
-        right = tail xs
-        left = take (length xs - 1) xs
-        allSafeInterval = all safeInterval $ zip left right
+        allSafeInterval = all safeInterval $ zip xs $ tail xs
 
 reportPermutations :: [Int] -> [[Int]]
 reportPermutations haha = go [] [] haha
