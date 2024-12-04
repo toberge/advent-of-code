@@ -20,3 +20,6 @@ out
 # IntelliJ
 .idea
 *.iml
+
+# Oooops
+input*
