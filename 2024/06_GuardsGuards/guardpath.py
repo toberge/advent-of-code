@@ -56,29 +56,41 @@ while not done:
         case (0, dy):
             # check if obstruction in y dir
             # if not, we're done
-            if not px in xs:
-                break
-            # if yes, continue on from there - 1
-            cands = xs[px] if dy > 0 else reversed(xs[px])
-            # print(list(cands), py, dy)
-            for y in cands:
-                if y > py if dy > 0 else y < py:
-                    start = (px, y - dy)
-                    break
-            else:
-                print("hey", py, dy, xs[px][0])
-                done = True
+            if px in xs:
+                # if yes, continue on from there - 1
+                cands = xs[px] if dy > 0 else reversed(xs[px])
+                # print(list(cands), py, dy)
+                for y in cands:
+                    if y > py if dy > 0 else y < py:
+                        start = (px, y - dy)
+                        break
+                else:
+                    print("hey", py, dy, xs[px][0])
+                    done = True
         case (dx, 0):
-            if not px in xs:
-                break
-            cands = ys[py] if dx > 0 else reversed(ys[py])
-            for x in cands:
-                if x > px if dx > 0 else x < px:
-                    start = (x - dx, py)
-                    break
-            else:
-                done = True
+            if px in xs:
+                cands = ys[py] if dx > 0 else reversed(ys[py])
+                for x in cands:
+                    if x > px if dx > 0 else x < px:
+                        start = (x - dx, py)
+                        break
+                else:
+                    done = True
     # TODO count positions along line pain....
+    if px == start[0] and py == start[1]:
+
+        while within_bounds((px, py)):
+            visited.add((px, py))
+            print(px, py)
+            px += delta[0]
+            py += delta[1]
+        break
+    print(px, py, start)
+    while not (px == start[0] and py == start[1]) and within_bounds((px, py)):
+        visited.add((px, py))
+        print(px, py)
+        px += delta[0]
+        py += delta[1]
     visited.add(start)
     delta = next(delta)
 
